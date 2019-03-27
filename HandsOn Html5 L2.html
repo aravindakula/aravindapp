@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+
+<script>
+function clickCounter() {
+  document.getElementById("result").innerHTML = "Latitude = " + localStorage.getItem("Latitude") + "     Longitude = " + localStorage.getItem("Longitude");
+}
+var x = document.getElementById("demo");
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+	
+  } else { 
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+
+function showPosition(position) {
+	localStorage.setItem("Latitude",position.coords.latitude);
+	localStorage.setItem("Longitude",position.coords.longitude); 
+}
+function allowDrop(ev) {
+  ev.preventDefault();
+}
+
+function drag(ev) {
+  ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev) {
+  ev.preventDefault();
+  var data = ev.dataTransfer.getData("text");
+  ev.target.appendChild(document.getElementById(data));
+}
+</script>
+<body>
+<p><button onclick="clickCounter()" type="button">Display Location</button></p>
+<div id="result"></div>
+
+<button onclick="getLocation()">Save Location to WebStorage</button>
+
+<p><strong>Note:</strong> The geolocation property is not supported in IE8 and earlier versions.</p>
+
+<p id="demo"></p>
+<div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">
+<svg height="200" width="200">
+  <circle cx="100" cy="100" r="90" stroke="black" stroke-width="3" fill="yellow" />
+  Sorry, your browser does not support inline SVG.  
+</svg> 
+</div>
+<div id="div" ondrop="drop(event)" ondragover="allowDrop(event)">
+<svg height="200" width="200">
+  <circle cx="100" cy="100" r="90" stroke="black" stroke-width="3" fill="green" />
+  Sorry, your browser does not support inline SVG.  
+</svg> 
+</div>
+
+<img id="drag1" src="Animation.gif" draggable="true" ondragstart="drag(event)" width="200" height="100">
+ 
+</body>
+</head>
+
+</html>
